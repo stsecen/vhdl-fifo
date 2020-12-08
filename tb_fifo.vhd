@@ -111,10 +111,10 @@ begin
 
         wait until clk_rd = '0';
         rd_en <= '1';
-        wait for 3 * uut_clk_rd;
+        wait for 30 * uut_clk_rd;
         rd_en <= '0';
 
-        for i in 1 to 5 loop
+        for i in 1 to 50 loop
             uut_data_in <= std_logic_vector(to_unsigned(i, M));
             wait for uut_clk_wr;
             uut_we <= '1';
