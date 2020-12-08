@@ -71,7 +71,7 @@ begin
                 end if;
             end if;
         end if;
-    end process write;
+    end process read;
     
     count: process(clk)
     begin
