@@ -17,8 +17,8 @@ architecture rtl of tb_fifo is
     signal uut_aempty_async, uut_afull_async: std_logic := '0';
     signal uut_empty_sync, uut_full_sync: std_logic := '0';
     signal uut_aempty_sync, uut_afull_sync: std_logic := '0';
-    constant uut_clk_we_time: time 100 ns;
-    constant uut_clk_rd_time: time 50 ns;
+    constant uut_clk_we_time: time := 100 ns;
+    constant uut_clk_rd_time: time := 50 ns;
     constant uut_clk_time: time := 10 ns;
 begin
     async: entity work.fifo_async(rtl)
@@ -27,7 +27,7 @@ begin
                 N => N,
                 AF=> AF,
                 AE=> AE
-            );
+            )
            port map(
             rst_w => uut_rst,
             clk_w => uut_clk_wr, 
@@ -48,7 +48,7 @@ begin
                 N => N,
                 AF=> AF,
                 AE=> AE
-           );
+           )
            port map(
             rst => uut_rst,
             clk => uut_clk,
@@ -98,7 +98,7 @@ begin
     uut: process
     begin
         uut_rst <= '1';
-        wait for 20 * uut_clk_rd;
+        wait for 20 * uut_clk_rd_time;
         uut_rst <= '0';
 
         for i in 1 to 20 loop
@@ -109,20 +109,20 @@ begin
             uut_we <= '0';
         end loop;
 
-        wait until clk_rd = '0';
-        rd_en <= '1';
-        wait for 30 * uut_clk_rd;
-        rd_en <= '0';
+        wait until uut_clk_rd = '0';
+        uut_re <= '1';
+        wait for 30 * uut_clk_rd_time;
+        uut_re <= '0';
 
         for i in 1 to 50 loop
             uut_data_in <= std_logic_vector(to_unsigned(i, M));
-            wait for uut_clk_wr;
+            wait for uut_clk_we_time;
             uut_we <= '1';
-            wait for uut_clk_wr;
+            wait for uut_clk_we_time;
             uut_we <= '0';
         end loop;
 
-        wait until clk_rd = '0';
+        wait until uut_clk_rd = '0';
 
         for i in 1 to 20 loop
             uut_we <= '1';

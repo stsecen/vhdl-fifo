@@ -2,11 +2,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+
+entity fifo_async is 
 generic(
     M : integer := 8;    --> width 
     N : integer := 32;   --> depth 
     AF: integer := 30;   --> almost full 
-    AE: integer := 2;    --> almost empty
+    AE: integer := 2    --> almost empty
 );
 port(
     rst_w,clk_w     :  in std_logic;
@@ -20,7 +22,7 @@ port(
     o_empty         : out std_logic;
     o_full          : out std_logic
 );
-end fifo_sync;
+end fifo_async;
 
 architecture rtl of fifo_async is
     type fifo_type is array(0 to N-1) of std_logic_vector(N-1 downto 0);
@@ -53,7 +55,7 @@ begin
             end if;
         end if;
     end process write;
-    write: process(clk_r)
+    read: process(clk_r)
     begin
         if rising_edge(clk_r) then
             if rst_r = '1' then
@@ -70,7 +72,7 @@ begin
                 end if;
             end if;
         end if;
-    end process write;
+    end process read;
     s_empty <= '1' when s_wr_cnt-s_rd_cnt=0 else '0';
     s_full  <= '1' when s_wr_cnt=N and s_rd_cnt=0 else '0';
     s_aempty <= '1' when s_wr_cnt-s_rd_cnt <= AE  else '0';

@@ -2,11 +2,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+
+entity fifo_sync is
 generic(
     M : integer := 8;    --> width 
     N : integer := 32;   --> depth 
     AF: integer := 30;   --> almost full 
-    AE: integer := 2;    --> almost empty
+    AE: integer := 2    --> almost empty
 );
 port(
     rst,clk         :  in std_logic;
